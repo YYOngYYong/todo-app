@@ -38,15 +38,31 @@ const App = () => {
     nextId.current += 1;
   });
 
-  const onRemove = useCallback((id) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
-  });
+  const onRemove = useCallback(
+    (id) => {
+      setTodos(todos.filter((todo) => todo.id !== id));
+    },
+    [todos],
+  );
+
+  const onToggle = useCallback(
+    (id) => {
+      setTodos(
+        todos.map((todo) =>
+          todo.id === id
+            ? { id: todo.id, text: todo.text, checked: !todo.checked }
+            : todo,
+        ),
+      );
+    },
+    [todos],
+  );
 
   return (
     <div>
       <TodoTemplate>
         <TodoInsert onInsert={onInsert} />
-        <TodoList todos={todos} onRemove={onRemove} />
+        <TodoList todos={todos} onRemove={onRemove} onToggle={onToggle} />
       </TodoTemplate>
     </div>
   );
